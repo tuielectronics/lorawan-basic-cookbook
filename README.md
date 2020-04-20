@@ -41,9 +41,27 @@ step by step to interface your lorawan for any STM32 mcu &amp; SX1276
     static Gpio_t key;
     DioIrqHandler *keyHandler = keyCallback;
     ```
-    add code after led1 initialization, assume PA_12 pin is input of your demo board
+    add code after `led1` initialization, assume PA_12 pin is input of your demo board
     ```javascript
     GpioInit( &key, PA_12, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
     GpioSetInterrupt( &key, IRQ_FALLING_EDGE, IRQ_HIGH_PRIORITY, keyHandler );
     ```
-    > compile and run the code, if short pin PA_12 to GND, you will see led light flip, **congratilations! go to step 15**, otherwise fix errors
+    > compile and run the code, if short pin PA_12 to GND, you will see led light flip, **congratilations! go to step 16**, otherwise fix errors
+    > possible miss interrupt error issue: `board-gpio.c`, `EXTI0_1_IRQHandler`, `HAL_GPIO_EXTI_Callback`, different series mcu might have different default names
+- 16, test RTC timer interrupt functions, add code after `led1` initialization,
+    ```javascript
+    Board_Init();
+    uint32_t t = Board_Timer_Test(2000);
+    if((t>2000 && t-2000<5)||(t<2000 && 2000-t<5)||(t==2000)){
+	  GpioWrite(&led1, 0);
+    }
+    ```
+    > compile and run the code, if the led flip, **congratilations! go to step 17**, otherwise fix errors
+    > possible miss interrupt error issue: `board-timer.c`, `RTC_Alarm_IRQHandler`, different series mcu might have different default names, such as `RTC_IRQHandler`
+    > possible timer does't match ticker issue: external clock frequency definition error, check Clock Configuration,
+- 17, start LoRaWAN code test now, 
+    > add `LoraWAN_Init();` after `Board_Init();`
+    > add `LoraWAN_Loop();` inside main while loop
+    > start debugging LORAWAN now!!!
+    
+##finish
