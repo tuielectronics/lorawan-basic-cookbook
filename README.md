@@ -28,7 +28,21 @@ step by step to interface your lorawan for any STM32 mcu &amp; SX1276
     > `#include "board.h"`
     > `#include "lorawan.h"`
     > add `static Gpio_t led1;` before **main()**
-- 14, test gpio output functions
+- 14, change `board.h` gpio pin definitions based on your demo board
+	```javascript
+	#define RADIO_DIO_0                                 PB_10
+	#define RADIO_DIO_1                                 PB_2
+	#define RADIO_DIO_2                                 PB_0
+	#define RADIO_DIO_3                                 PB_1
+
+	#define RADIO_RESET                                 PB_11
+
+	#define RADIO_NSS                                   PA_4
+	#define RADIO_SCLK                                  PA_5
+	#define RADIO_MISO                                  PA_6
+	#define RADIO_MOSI                                  PA_7
+	```
+- 14-1, test gpio output functions
     > add `GpioInit( &led1, PB_8, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );` before main while, (assume PB_8 control LED of your demo board)
     > add `GpioWrite(&led1, 1);`
     > compile and run the code, if the LED got light up, **congratilations! go to step 15**, otherwise fix errors
