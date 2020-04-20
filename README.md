@@ -77,5 +77,5 @@ step by step to interface your lorawan for any STM32 mcu &amp; SX1276
     > add `LoraWAN_Init();` after `Board_Init();`
     > add `LoraWAN_Loop();` inside main while loop
     > start debugging LORAWAN now!!!
-    
+    > most common issues: interrupt level, rx windows mismatch with the tx for Class A
 ##finish
